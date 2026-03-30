@@ -1,5 +1,7 @@
 # UV Netware - Interactive AI Analytics Pipeline Explorer
 
+**🌟 Live Project Link:** [https://uvnet.netlify.app/](https://uvnet.netlify.app/)
+
 Welcome to **UV Netware**, an interactive dashboard built to visually document and explain the lifecycle of raw analytics data as it travels through a modern AI analytics pipeline. This project was developed as part of an ongoing internship, tracking the day-to-day progress from Day 1.
 
 ## 🚀 Overview
