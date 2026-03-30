@@ -1,0 +1,60 @@
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .step-line {
+            position: absolute;
+            left: 1.25rem;
+            top: 2.5rem;
+            bottom: -0.5rem;
+            width: 2px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+
+        .step-line.active {
+            background-color: #4f46e5;
+            transition: background-color 0.3s ease;
+        }
