@@ -148,29 +148,6 @@ const pipelineData = [
     },
     {
         id: 8,
-        title: "Cache & API Layer",
-        subtitle: "(Redis & Node)",
-        icon: "&#128472;",
-        meaning: "Serves requested data to the frontend UI rapidly. The API fetches the processed AI insights and metrics, while Redis ensures repeated requests load instantly.",
-        keywords: [
-            "key: A shortcut ID tag so the system can instantly find a saved report instead of doing math from scratch (e.g., 'wk13').",
-            "value: The actual saved data chunk sitting in super-fast memory for instant loading (e.g., { 'sessions': 320 }).",
-            "ttl: An expiration timer that tells the system when to throw away old data and fetch fresh numbers (e.g., 3600).",
-            "/weekly & /monthly: The digital web addresses that your dashboard uses to ask the server for data (e.g., GET /weekly)."
-        ],
-        jsons: [
-            {
-                label: "Cache Structure",
-                code: `{\n  "key": "wk13",\n  "value": { "sessions": 320 },\n  "ttl": 3600\n}`
-            },
-            {
-                label: "API Response",
-                code: `{\n  "status": 200,\n  "data": { "sessions": 320 }\n}`
-            }
-        ]
-    },
-    {
-        id: 9,
         title: "Dashboard UI",
         icon: "&#128187;",
         meaning: "Final screen where the user views the data. This is the interactive frontend application that consumes the API and visualizes the entire pipeline's output.",
@@ -202,30 +179,36 @@ function initStepper() {
 
         const stepEl = document.createElement('div');
         stepEl.className = 'relative flex items-start cursor-pointer group mb-8';
-        stepEl.onclick = () => selectStep(step.id);
+        stepEl.onclick = () => {
+            selectStep(step.id);
+            // Auto-close the mobile drawer after selecting a step
+            if (window.innerWidth < 768 && typeof closeSidebar === 'function') {
+                closeSidebar();
+            }
+        };
 
         let lineHtml = '';
         if (!isLast) {
             lineHtml = `<div id="line-${step.id}" class="step-line ${step.id < currentStepId ? 'active' : ''}"></div>`;
         }
 
-        stepEl.innerHTML = \`
-            \${lineHtml}
-            <div id="circle-${step.id}" class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 flex-shrink-0 \${step.id === currentStepId ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-200' : (step.id < currentStepId ? 'bg-indigo-100 border-indigo-600 text-indigo-600' : 'bg-white border-stone-300 text-stone-400 group-hover:border-indigo-400')}">
-                \${step.icon}
-            </div>
-            <div class="ml-4 mt-1">
-                <h4 id="title-${step.id}" class="text-sm font-semibold transition-colors duration-300 \${step.id === currentStepId ? 'text-indigo-900' : 'text-stone-600 group-hover:text-indigo-600'}">\${step.title}</h4>
-                \${step.subtitle ? \`<p class="text-xs text-stone-400">\${step.subtitle}</p>\` : ''}
-            </div>
-        \`;
+        stepEl.innerHTML = `
+                    ${lineHtml}
+                    <div id="circle-${step.id}" class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 flex-shrink-0 ${step.id === currentStepId ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-200' : (step.id < currentStepId ? 'bg-indigo-100 border-indigo-600 text-indigo-600' : 'bg-white border-stone-300 text-stone-400 group-hover:border-indigo-400')}">
+                        ${step.icon}
+                    </div>
+                    <div class="ml-4 mt-1">
+                        <h4 id="title-${step.id}" class="text-sm font-semibold transition-colors duration-300 ${step.id === currentStepId ? 'text-indigo-900' : 'text-stone-600 group-hover:text-indigo-600'}">${step.title}</h4>
+                        ${step.subtitle ? `<p class="text-xs text-stone-400">${step.subtitle}</p>` : ''}
+                    </div>
+                `;
         stepperContainer.appendChild(stepEl);
     });
 }
 
 function renderStepDetails(step) {
-    document.getElementById('view-step-number').innerText = \`Step \${step.id} of \${pipelineData.length}\`;
-    document.getElementById('view-title').innerText = step.title + (step.subtitle ? \` \${step.subtitle}\` : '');
+    document.getElementById('view-step-number').innerText = `Step ${step.id} of ${pipelineData.length}`;
+    document.getElementById('view-title').innerText = step.title + (step.subtitle ? ` ${step.subtitle}` : '');
     document.getElementById('view-meaning').innerText = step.meaning;
 
     const keywordsUl = document.getElementById('view-keywords');
@@ -233,16 +216,16 @@ function renderStepDetails(step) {
         const split = kw.split(':');
         const term = split[0];
         const desc = split.slice(1).join(':');
-        return \`<li class="flex items-start"><span class="text-indigo-500 mr-2 mt-0.5">&#10003;</span><div><span class="font-semibold text-stone-800">\${term}:</span><span class="text-stone-600">\${desc}</span></div></li>\`;
+        return `<li class="flex items-start"><span class="text-indigo-500 mr-2 mt-0.5">&#10003;</span><div><span class="font-semibold text-stone-800">${term}:</span><span class="text-stone-600">${desc}</span></div></li>`;
     }).join('');
 
     const jsonContainer = document.getElementById('view-json-container');
-    jsonContainer.innerHTML = step.jsons.map(j => \`
-        <div class="mb-4 last:mb-0">
-            <div class="text-xs text-indigo-400 mb-1 border-b border-stone-700 pb-1 inline-block">\${j.label}</div>
-            <pre class="whitespace-pre-wrap break-words leading-relaxed"><code>\${j.code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
-        </div>
-    \`).join('');
+    jsonContainer.innerHTML = step.jsons.map(j => `
+                <div class="mb-4 last:mb-0">
+                    <div class="text-xs text-indigo-400 mb-1 border-b border-stone-700 pb-1 inline-block">${j.label}</div>
+                    <pre class="whitespace-pre-wrap break-words leading-relaxed"><code>${j.code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
+                </div>
+            `).join('');
 
     const chartView = document.getElementById('dashboard-view');
     if (step.showChart) {
@@ -324,3 +307,4 @@ function renderSimulatedChart() {
 document.addEventListener('DOMContentLoaded', () => {
     selectStep(1);
 });
+

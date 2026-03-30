@@ -6,33 +6,57 @@ body {
     font-family: 'Fira Code', monospace;
 }
 
+/* ── Chart ── */
 .chart-container {
     position: relative;
     width: 100%;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
-    height: 40vh;
-    max-height: 400px;
+    height: 260px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
     .chart-container {
-        height: 350px;
+        height: 320px;
     }
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
+@media (min-width: 1024px) {
+    .chart-container {
+        height: 360px;
+        max-height: 400px;
+    }
 }
 
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+/* ── Main area height ── */
+main {
+    /* header ~65 px; fill the rest of the viewport */
+    height: calc(100vh - 65px);
 }
 
+/* ── Sidebar ──
+   On mobile: fixed full-height drawer that slides in from the left.
+   On md+: static column that fills the main row height. */
+#sidebar {
+    /* mobile: cover the full screen height so it can scroll independently */
+    height: 100vh;
+    top: 0;
+}
+
+@media (min-width: 768px) {
+    #sidebar {
+        position: relative;
+        height: 100%;
+        top: auto;
+        transform: none !important; /* always visible on md+ */
+    }
+}
+
+/* ── Custom scrollbar ── */
 .custom-scroll::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
+    height: 5px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
@@ -44,6 +68,7 @@ body {
     border-radius: 10px;
 }
 
+/* ── Stepper connector line ── */
 .step-line {
     position: absolute;
     left: 1.25rem;
