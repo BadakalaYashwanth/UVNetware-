@@ -181,10 +181,8 @@ function initStepper() {
         stepEl.className = 'relative flex items-start cursor-pointer group mb-8';
         stepEl.onclick = () => {
             selectStep(step.id);
-            // Auto-close the mobile drawer after selecting a step
-            if (window.innerWidth < 768 && typeof closeSidebar === 'function') {
-                closeSidebar();
-            }
+            // Close the mobile sidebar drawer after a step is selected
+            if (typeof closeSidebar === 'function') closeSidebar();
         };
 
         let lineHtml = '';

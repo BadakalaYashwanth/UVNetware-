@@ -5,94 +5,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Analytics Pipeline Architecture</title>
+    <meta name="description" content="Interactive AI Analytics Pipeline Architecture Explorer – understand every stage from data ingestion to dashboard.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
-        rel="stylesheet">
-
-    <!-- Chosen Palette: Warm Neutrals with Indigo Accents -->
-    <!-- Application Structure Plan: A split-view dashboard structure. The left sidebar acts as an interactive, vertical pipeline stepper representing the data flow. The main right area dynamically updates to show the deep dive (Meaning, Keywords, JSON Payloads, and Visualizations) of the currently selected pipeline stage. This structure was chosen because it perfectly mirrors the sequential nature of a data pipeline while allowing users to explore the complex JSON and metadata of each node without being overwhelmed by a single massive diagram. -->
-    <!-- Visualization & Content Choices: 
-         - Pipeline Steps -> Goal: Navigate & Inform -> Presentation: Interactive vertical stepper (HTML/CSS) -> Interaction: Clickable nodes -> Justification: Shows linear progression clearly without SVG.
-         - Node Details (Meaning/Keywords) -> Goal: Inform -> Presentation: Dynamic text cards -> Interaction: Auto-updates on step change -> Justification: Keeps UI clean and context-relevant.
-         - JSON Payloads -> Goal: Inform/Technical -> Presentation: Styled <pre> blocks with Fira Code -> Interaction: Scrollable, auto-updates -> Justification: Best for reading code structures.
-         - Final Dashboard Step -> Goal: Visualize Output -> Presentation: Chart.js Bar Chart -> Interaction: Hover tooltips -> Justification: Simulates the actual end-goal of the pipeline (Dashboard UI) using allowed canvas charting. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body class="bg-stone-50 text-stone-800 h-screen overflow-hidden flex flex-col">
+<!--
+  LAYOUT STRATEGY
+  ───────────────
+  Mobile  (<768 px) : Single-column. Sidebar hidden behind a slide-in drawer
+                      opened via the hamburger button in the header.
+  Tablet  (768-1023): Two-column side-by-side. Sidebar is always visible.
+  Desktop (≥1024 px): Same two-column, sidebar slightly narrower (1/4 width).
 
-    <header class="bg-white border-b border-stone-200 px-6 py-4 flex-shrink-0 shadow-sm z-10">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-2xl font-bold text-stone-900 tracking-tight">AI Analytics Pipeline</h1>
-                <p class="text-sm text-stone-500 mt-1">Interactive Architecture Explorer</p>
+  We use `min-h-screen` + normal document flow instead of `h-screen overflow-hidden`
+  so that content is NEVER clipped on small screens.
+-->
+
+<body class="app-body">
+
+    <!-- ░░ MOBILE BACKDROP (closes drawer on tap) ░░ -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeSidebar()"></div>
+
+    <!-- ═══════════════════════ HEADER ═══════════════════════ -->
+    <header class="app-header">
+        <div class="header-inner">
+
+            <!-- Left: hamburger (mobile only) + title -->
+            <div class="header-left">
+                <button id="hamburger-btn" class="hamburger-btn" onclick="toggleSidebar()" aria-label="Open pipeline stages">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="hamburger-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="header-title">AI Analytics Pipeline</h1>
+                    <p class="header-subtitle">Interactive Architecture Explorer</p>
+                </div>
             </div>
-            <div
-                class="bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-lg text-sm text-indigo-800 font-medium flex items-center shadow-inner">
-                <span class="mr-2 text-lg">💡</span>
-                Store Data &rarr; Group by Time &rarr; Calculate Metrics &rarr; Find Patterns &rarr; Generate Insights
-                &rarr; Dashboard
+
+            <!-- Right: pipeline flow badge -->
+            <div class="pipeline-badge">
+                <span class="pipeline-badge-icon">💡</span>
+                <span class="pipeline-badge-text">
+                    Store &rarr; Group &rarr; Calculate &rarr; Find Patterns &rarr; Insights &rarr; Dashboard
+                </span>
             </div>
+
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl mx-auto w-full flex flex-col md:flex-row overflow-hidden relative">
+    <!-- ═══════════════════════ MAIN AREA ═══════════════════════ -->
+    <div class="app-main">
 
-        <aside
-            class="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-stone-200 overflow-y-auto custom-scroll flex-shrink-0 relative z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
-            <div class="p-6">
-                <h2 class="text-xs font-bold text-stone-400 uppercase tracking-wider mb-6">Pipeline Stages</h2>
-                <div id="pipeline-stepper" class="relative">
+        <!-- ── SIDEBAR ── -->
+        <aside id="sidebar" class="app-sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-header-row">
+                    <h2 class="sidebar-label">Pipeline Stages</h2>
+                    <!-- Close button – only shown on mobile inside the drawer -->
+                    <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
                 </div>
+                <div id="pipeline-stepper" class="relative"></div>
             </div>
         </aside>
 
-        <section class="flex-1 overflow-y-auto custom-scroll bg-stone-50/50 p-6 md:p-8 relative">
-            <div class="max-w-4xl mx-auto space-y-6">
+        <!-- ── CONTENT PANE ── -->
+        <main class="app-content" id="content-pane">
+            <div class="content-inner">
 
-                <div class="mb-2">
-                    <p class="text-indigo-600 font-semibold text-sm tracking-wide uppercase mb-1" id="view-step-number">
-                        Step 1</p>
-                    <h2 class="text-3xl font-bold text-stone-900" id="view-title">Aggregated Data Store</h2>
+                <!-- Step header -->
+                <div class="step-header">
+                    <p class="step-number-label" id="view-step-number">Step 1</p>
+                    <h2 class="step-title" id="view-title">Aggregated Data Store</h2>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 space-y-6">
+                <!-- Content grid: 1-col on mobile/tablet, 3-col on desktop -->
+                <div class="content-grid">
 
-                        <div
-                            class="bg-white rounded-xl shadow-sm border border-stone-200 p-6 transition-all hover:shadow-md">
-                            <h3 class="flex items-center text-lg font-semibold text-stone-800 mb-3">
-                                <span
-                                    class="bg-stone-100 text-stone-600 w-8 h-8 rounded flex items-center justify-center mr-3 text-sm">&#128269;</span>
-                                Meaning & Purpose
+                    <!-- Left column: Meaning + Keywords + Chart -->
+                    <div class="content-left">
+
+                        <div class="card">
+                            <h3 class="card-heading">
+                                <span class="card-icon">&#128269;</span>
+                                Meaning &amp; Purpose
                             </h3>
                             <p class="text-stone-600 leading-relaxed" id="view-meaning"></p>
                         </div>
 
-                        <div
-                            class="bg-white rounded-xl shadow-sm border border-stone-200 p-6 transition-all hover:shadow-md">
-                            <h3 class="flex items-center text-lg font-semibold text-stone-800 mb-4">
-                                <span
-                                    class="bg-stone-100 text-stone-600 w-8 h-8 rounded flex items-center justify-center mr-3 text-sm">&#128273;</span>
+                        <div class="card">
+                            <h3 class="card-heading">
+                                <span class="card-icon">&#128273;</span>
                                 Key Data Attributes
                             </h3>
-                            <ul id="view-keywords" class="space-y-3">
-                            </ul>
+                            <ul id="view-keywords" class="space-y-3"></ul>
                         </div>
 
-                        <div id="dashboard-view"
-                            class="hidden bg-white rounded-xl shadow-sm border border-stone-200 p-6 transition-all hover:shadow-md">
-                            <h3 class="flex items-center text-lg font-semibold text-stone-800 mb-4">
-                                <span
-                                    class="bg-stone-100 text-stone-600 w-8 h-8 rounded flex items-center justify-center mr-3 text-sm">&#128202;</span>
+                        <div id="dashboard-view" class="card hidden">
+                            <h3 class="card-heading">
+                                <span class="card-icon">&#128202;</span>
                                 Simulated Dashboard View
                             </h3>
-                            <p class="text-sm text-stone-500 mb-4">This visualizes the data produced by the AI Analytics
-                                Engine at the end of the pipeline.</p>
+                            <p class="text-sm text-stone-500 mb-4">This visualizes the data produced by the AI Analytics Engine at the end of the pipeline.</p>
                             <div class="chart-container">
                                 <canvas id="simulatedChart"></canvas>
                             </div>
@@ -100,30 +121,55 @@
 
                     </div>
 
-                    <div class="lg:col-span-1">
-                        <div
-                            class="bg-stone-900 rounded-xl shadow-lg border border-stone-700 overflow-hidden sticky top-6">
-                            <div
-                                class="bg-stone-800 px-4 py-2 flex items-center justify-between border-b border-stone-700">
-                                <div class="flex space-x-2">
-                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <!-- Right column: JSON viewer -->
+                    <div class="content-right">
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <div class="json-dots">
+                                    <span class="json-dot bg-red-500"></span>
+                                    <span class="json-dot bg-yellow-500"></span>
+                                    <span class="json-dot bg-green-500"></span>
                                 </div>
-                                <span class="text-xs text-stone-400 font-medium code-font">Payload.json</span>
+                                <span class="json-filename">Payload.json</span>
                             </div>
-                            <div id="view-json-container"
-                                class="p-4 overflow-y-auto custom-scroll text-sm code-font text-stone-300 max-h-[60vh]">
-                            </div>
+                            <div id="view-json-container" class="json-body custom-scroll"></div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-        </section>
-    </main>
+                </div><!-- /content-grid -->
+
+            </div><!-- /content-inner -->
+        </main><!-- /content-pane -->
+
+    </div><!-- /app-main -->
 
     <script src="js/app.js"></script>
-</body>
 
+    <script>
+        /* ── Sidebar toggle helpers (mobile drawer) ── */
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const bd = document.getElementById('sidebar-backdrop');
+            const open = sb.classList.contains('is-open');
+            if (open) {
+                sb.classList.remove('is-open');
+                bd.classList.remove('is-visible');
+            } else {
+                sb.classList.add('is-open');
+                bd.classList.add('is-visible');
+            }
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('is-open');
+            document.getElementById('sidebar-backdrop').classList.remove('is-visible');
+        }
+
+        /* Close drawer automatically when the viewport grows past the mobile breakpoint */
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) closeSidebar();
+        });
+    </script>
+
+</body>
 </html>
