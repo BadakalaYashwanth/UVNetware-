@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Analytics Pipeline Architecture</title>
-    <meta name="description" content="Interactive AI Analytics Pipeline Architecture Explorer – understand every stage from data ingestion to dashboard.">
+    <meta name="description"
+        content="Interactive AI Analytics Pipeline Architecture Explorer – understand every stage from data ingestion to dashboard.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -35,9 +38,12 @@
 
             <!-- Left: hamburger (mobile only) + title -->
             <div class="header-left">
-                <button id="hamburger-btn" class="hamburger-btn" onclick="toggleSidebar()" aria-label="Open pipeline stages">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="hamburger-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                <button id="hamburger-btn" class="hamburger-btn" onclick="toggleSidebar()"
+                    aria-label="Open pipeline stages">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="hamburger-icon" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
                 <div>
@@ -67,8 +73,10 @@
                     <h2 class="sidebar-label">Pipeline Stages</h2>
                     <!-- Close button – only shown on mobile inside the drawer -->
                     <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -113,7 +121,8 @@
                                 <span class="card-icon">&#128202;</span>
                                 Simulated Dashboard View
                             </h3>
-                            <p class="text-sm text-stone-500 mb-4">This visualizes the data produced by the AI Analytics Engine at the end of the pipeline.</p>
+                            <p class="text-sm text-stone-500 mb-4">This visualizes the data produced by the AI Analytics
+                                Engine at the end of the pipeline.</p>
                             <div class="chart-container">
                                 <canvas id="simulatedChart"></canvas>
                             </div>
@@ -172,4 +181,5 @@
     </script>
 
 </body>
+
 </html>
