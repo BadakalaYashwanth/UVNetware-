@@ -1,0 +1,73 @@
+{
+  "weekly_summary": {
+    "total_clicks": 15481,
+    "total_revenue": 127674.5,
+    "growth_rate": "+0%"
+  },
+  "monthly_summary": {
+    "total_clicks": 15481,
+    "total_revenue": 127674.5,
+    "growth_rate": "+0%"
+  },
+  "yearly_summary": {
+    "total_clicks": 15481,
+    "total_revenue": 127674.5,
+    "growth_rate": "+0%"
+  },
+  "channel_performance": [
+    {
+      "channel": "Email",
+      "ROI": 64.80288461538461
+    },
+    {
+      "channel": "Social Media",
+      "ROI": 18.027413150986018
+    },
+    {
+      "channel": "Affiliate",
+      "ROI": 9.35210776102736
+    },
+    {
+      "channel": "Paid Search",
+      "ROI": 3.7955444818994577
+    },
+    {
+      "channel": "Display",
+      "ROI": 0.8236970487368981
+    },
+    {
+      "channel": "Direct",
+      "ROI": 0.0
+    },
+    {
+      "channel": "Organic Search",
+      "ROI": 0.0
+    }
+  ],
+  "roi_insights": {
+    "top_factors": [
+      "clicks",
+      "session_duration"
+    ]
+  },
+  "budget_recommendations": {
+    "increase": [
+      "Email",
+      "Social Media",
+      "Affiliate",
+      "Paid Search",
+      "Direct",
+      "Organic Search"
+    ],
+    "decrease": [
+      "Display"
+    ]
+  },
+  "anomalies": [
+    "Flags raised for Direct on Thursday due to: sudden drop in impressions",
+    "Flags raised for Social Media on Thursday due to: complex multivariate anomaly",
+    "Flags raised for Display on Thursday due to: unusually high cost | significant conversion rate drop",
+    "Flags raised for Social Media on Thursday due to: complex multivariate anomaly",
+    "Flags raised for Display on Thursday due to: unusually high cost"
+  ]
+}

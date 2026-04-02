@@ -1,0 +1,9 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+xgboost
+scipy
+statsmodels
+plotly==5.18.0
