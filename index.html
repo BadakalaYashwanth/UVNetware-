@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analytics Pipeline Architecture</title>
+    <meta name="description"
+        content="Interactive AI Analytics Pipeline Architecture Explorer – understand every stage from data ingestion to dashboard.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<!--
+  LAYOUT STRATEGY
+  ───────────────
+  Mobile  (<768 px) : Single-column. Sidebar hidden behind a slide-in drawer
+                      opened via the hamburger button in the header.
+  Tablet  (768-1023): Two-column side-by-side. Sidebar is always visible.
+  Desktop (≥1024 px): Same two-column, sidebar slightly narrower (1/4 width).
+
+  We use `min-h-screen` + normal document flow instead of `h-screen overflow-hidden`
+  so that content is NEVER clipped on small screens.
+-->
+
+<body class="app-body">
+
+    <!-- ░░ MOBILE BACKDROP (closes drawer on tap) ░░ -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeSidebar()"></div>
+
+    <!-- ═══════════════════════ HEADER ═══════════════════════ -->
+    <header class="app-header">
+        <div class="header-inner">
+
+            <!-- Left: hamburger (mobile only) + title -->
+            <div class="header-left">
+                <button id="hamburger-btn" class="hamburger-btn" onclick="toggleSidebar()"
+                    aria-label="Open pipeline stages">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="hamburger-icon" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="header-title">AI Analytics Pipeline</h1>
+                    <p class="header-subtitle">Interactive Architecture Explorer</p>
+                </div>
+            </div>
+
+            <!-- Right: pipeline flow badge -->
+            <div class="pipeline-badge">
+                <span class="pipeline-badge-icon">💡</span>
+                <span class="pipeline-badge-text">
+                    Store &rarr; Group &rarr; Calculate &rarr; Find Patterns &rarr; Insights &rarr; Dashboard
+                </span>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ═══════════════════════ MAIN AREA ═══════════════════════ -->
+    <div class="app-main">
+
+        <!-- ── SIDEBAR ── -->
+        <aside id="sidebar" class="app-sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-header-row">
+                    <h2 class="sidebar-label">Pipeline Stages</h2>
+                    <!-- Close button – only shown on mobile inside the drawer -->
+                    <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="pipeline-stepper" class="relative"></div>
+            </div>
+        </aside>
+
+        <!-- ── CONTENT PANE ── -->
+        <main class="app-content" id="content-pane">
+            <div class="content-inner">
+
+                <!-- Step header -->
+                <div class="step-header">
+                    <p class="step-number-label" id="view-step-number">Step 1</p>
+                    <h2 class="step-title" id="view-title">Aggregated Data Store</h2>
+                </div>
+
+                <!-- Content grid: 1-col on mobile/tablet, 3-col on desktop -->
+                <div class="content-grid">
+
+                    <!-- Left column: Meaning + Keywords + Chart -->
+                    <div class="content-left">
+
+                        <div class="card">
+                            <h3 class="card-heading">
+                                <span class="card-icon">&#128269;</span>
+                                Meaning &amp; Purpose
+                            </h3>
+                            <p class="text-stone-600 leading-relaxed" id="view-meaning"></p>
+                        </div>
+
+                        <div class="card">
+                            <h3 class="card-heading">
+                                <span class="card-icon">&#128273;</span>
+                                Key Data Attributes
+                            </h3>
+                            <ul id="view-keywords" class="space-y-3"></ul>
+                        </div>
+
+                        <div id="dashboard-view" class="card hidden">
+                            <h3 class="card-heading">
+                                <span class="card-icon">&#128202;</span>
+                                Simulated Dashboard View
+                            </h3>
+                            <p class="text-sm text-stone-500 mb-4">This visualizes the data produced by the AI Analytics
+                                Engine at the end of the pipeline.</p>
+                            <div class="chart-container">
+                                <canvas id="simulatedChart"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right column: JSON viewer -->
+                    <div class="content-right">
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <div class="json-dots">
+                                    <span class="json-dot bg-red-500"></span>
+                                    <span class="json-dot bg-yellow-500"></span>
+                                    <span class="json-dot bg-green-500"></span>
+                                </div>
+                                <span class="json-filename">Payload.json</span>
+                            </div>
+                            <div id="view-json-container" class="json-body custom-scroll"></div>
+                        </div>
+                    </div>
+
+                </div><!-- /content-grid -->
+
+            </div><!-- /content-inner -->
+        </main><!-- /content-pane -->
+
+    </div><!-- /app-main -->
+
+    <script src="js/app.js"></script>
+
+    <script>
+        /* ── Sidebar toggle helpers (mobile drawer) ── */
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const bd = document.getElementById('sidebar-backdrop');
+            const open = sb.classList.contains('is-open');
+            if (open) {
+                sb.classList.remove('is-open');
+                bd.classList.remove('is-visible');
+            } else {
+                sb.classList.add('is-open');
+                bd.classList.add('is-visible');
+            }
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('is-open');
+            document.getElementById('sidebar-backdrop').classList.remove('is-visible');
+        }
+
+        /* Close drawer automatically when the viewport grows past the mobile breakpoint */
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) closeSidebar();
+        });
+    </script>
+
+</body>
+
+</html>
