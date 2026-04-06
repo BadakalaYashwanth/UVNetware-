@@ -1,0 +1,115 @@
+{
+  "version": "v1",
+  "meta": {
+    "userId": "u1_001",
+    "siteId": "site_001",
+    "generatedAt": "2026-04-01T15:10:24.586Z",
+    "timestamp": "2026-04-01T15:10:24.586Z",
+    "channel": "google",
+    "campaign_id": "camp_001"
+  },
+  "userCluster": {
+    "clusterId": 0,
+    "label": "high_value_user"
+  },
+  "marketingMetrics": {
+    "impressions": 100,
+    "clicks": 7,
+    "conversions": 0,
+    "cost": 50,
+    "revenue": 0
+  },
+  "aggregated": {
+    "traffic": {
+      "totalSessions": 1,
+      "avgSessionTime": 5
+    },
+    "topPages": [
+      {
+        "page": "/",
+        "views": 6,
+        "timeSpent": 260
+      }
+    ],
+    "clickAnalytics": [
+      {
+        "element": "learn_more",
+        "page": "/",
+        "clicks": 7
+      },
+      {
+        "element": "buy_button",
+        "page": "/",
+        "clicks": 7
+      }
+    ],
+    "sessionInsights": {
+      "bounceRate": 0,
+      "avgScrollDepth": 40
+    },
+    "deviceBreakdown": [
+      {
+        "device": "desktop",
+        "percentage": 1
+      }
+    ],
+    "hourlyTraffic": [
+      {
+        "hour": 14,
+        "sessions": 1
+      }
+    ],
+    "topExitPages": [
+      {
+        "page": "/",
+        "exits": 5
+      }
+    ]
+  },
+  "ai_input": {
+    "sessions": [
+      {
+        "sessionId": "s_001",
+        "visitorId": "u1_001",
+        "siteId": "site_001",
+        "device": "desktop",
+        "source": "google",
+        "converted": false,
+        "createdAt": "2026-04-01T14:58:05.482Z",
+        "session_duration": 200,
+        "bounce_rate": 0,
+        "pages": [
+          {
+            "path": "/",
+            "timeSpent": 120,
+            "scrollDepth": 60,
+            "clicks": 3,
+            "enteredAt": "2026-04-01T14:58:05.482Z"
+          },
+          {
+            "path": "/pricing",
+            "timeSpent": 80,
+            "scrollDepth": 40,
+            "clicks": 2,
+            "enteredAt": "2026-04-01T14:59:10.000Z"
+          }
+        ],
+        "eventsCount": 10,
+        "totalDuration": 200
+      }
+    ],
+    "funnel": {
+      "siteId": "site_001",
+      "steps": [
+        "/",
+        "/pricing",
+        "/checkout",
+        "/thank-you"
+      ]
+    }
+  },
+  "summary": {
+    "text": "User has low engagement on pricing page and dropped before checkout. Improve CTA visibility.",
+    "generatedAt": "2026-04-01T15:10:24.586Z"
+  }
+}

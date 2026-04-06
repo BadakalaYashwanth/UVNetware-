@@ -13,6 +13,13 @@ def detect_anomalies(df: pd.DataFrame, features=['impressions', 'clicks', 'conve
     # Fill any missing values in the features
     X = df[features].fillna(0)
     
+    # Handle very small datasets for which isolation is not meaningful
+    if len(df) < 5:
+        df['is_anomaly'] = False
+        df['anomaly_score'] = 1.0 # 1.0 means perfectly normal in IsolationForest context
+        df['anomaly_reason'] = "Insuffient data for anomaly detection"
+        return df
+
     # Initialize Isolation Forest
     # Contamination defines the expected proportion of outliers in the data set
     model = IsolationForest(contamination=contamination, random_state=42)

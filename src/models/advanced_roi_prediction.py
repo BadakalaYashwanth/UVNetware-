@@ -26,7 +26,14 @@ def train_roi_prediction_model(df: pd.DataFrame, target_col='revenue'):
     X = df[features].fillna(0)
     y = df[target_col].fillna(0)
     
-    # 2. Train/Test Split
+    # 2. Dataset Size Check
+    # XGBoost and Train/Test split require more than 1 sample to function
+    if len(df) < 5:
+        print("Dataset size too small for advanced ML ROI prediction. Returning default benchmarks.")
+        importance_dict = {f: 0.25 for f in features} # equal baseline distribution
+        return None, importance_dict
+
+    # 3. Train/Test Split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # 3. Initialize and Train XGBoost

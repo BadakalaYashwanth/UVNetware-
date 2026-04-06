@@ -15,7 +15,7 @@ class DefaultEncoder(json.JSONEncoder):
         else:
             return super(DefaultEncoder, self).default(obj)
 
-def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, anomalies_df: pd.DataFrame, budget_recs: pd.DataFrame, importance_dict: dict = None, segment_profiles: dict = None) -> dict:
+def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, anomalies_df: pd.DataFrame, budget_recs: pd.DataFrame, importance_dict: dict = None, segment_profiles: dict = None, input_summary: dict = None) -> dict:
     """
     Constructs the final JSON output structure based exactly on the requested target schema.
     """
@@ -96,7 +96,8 @@ def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, ano
         "channel_performance": chan_perf_formatted,
         "roi_insights": roi_insights,
         "budget_recommendations": budget_recommendations,
-        "anomalies": anomalies_formatted[:10] # limit to top 10 string outputs
+        "anomalies": anomalies_formatted[:10], # limit to top 10 string outputs
+        "executive_summary": input_summary if input_summary else "N/A"
     }
     
     return json.loads(json.dumps(output_structure, cls=DefaultEncoder))

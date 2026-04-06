@@ -17,14 +17,26 @@ def main():
     print("🚀 AI Analytics: Transforming Events into Insights ✅")
     print("======================================================")
     
-    raw_data_path = 'data/raw/marketing_data.json'
+    real_world_path = 'data/raw/real_world_input.json'
     
     # -----------------------------------------------------
     # Phase 1: Raw Data → Preprocessing
     # -----------------------------------------------------
     print("\n[1/7] Ingesting Raw Data & Preprocessing...")
     import pandas as pd
-    if os.path.exists(raw_data_path):
+    from data_processing.parser import parse_real_world_data
+    
+    raw_df = pd.DataFrame()
+    input_summary = None
+    
+    if os.path.exists(real_world_path):
+        print(f"Found real-world input: {real_world_path}. Parsing nested structure.")
+        with open(real_world_path, 'r') as f:
+            real_data = json.load(f)
+        raw_df = parse_real_world_data(real_data)
+        input_summary = real_data.get('summary')
+        print(f"Loaded {len(raw_df)} records from {real_world_path}")
+    elif os.path.exists(raw_data_path):
         raw_df = pd.read_json(raw_data_path)
         print(f"Loaded {len(raw_df)} records from {raw_data_path}")
     else:
@@ -70,7 +82,8 @@ def main():
     # The report generator handles the explicit Time Aggregation summarizations
     report_dict = generate_json_report(
         enriched_df, chan_perf, anomalies_df, budget_recs,
-        importance_dict=feature_importance, segment_profiles=segment_profiles
+        importance_dict=feature_importance, segment_profiles=segment_profiles,
+        input_summary=input_summary
     )
     
     output_path = 'output_insights.json'

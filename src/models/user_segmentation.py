@@ -24,9 +24,15 @@ def segment_users(df: pd.DataFrame, n_clusters=3):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(user_agg[features].fillna(0))
     
-    # Run clustering
-    kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
-    user_agg['segment_id'] = kmeans.fit_predict(X_scaled)
+    # Run clustering - but only if we have enough samples
+    final_n_clusters = min(n_clusters, len(user_agg))
+    
+    if final_n_clusters > 1:
+        kmeans = KMeans(n_clusters=final_n_clusters, random_state=42, n_init=10)
+        user_agg['segment_id'] = kmeans.fit_predict(X_scaled)
+    else:
+        # Fallback for single users or small datasets where clustering isn't possible
+        user_agg['segment_id'] = 0
     
     # Map segment mappings back to the original operational dataframe 
     df = df.merge(user_agg[['user_id', 'segment_id']], on='user_id', how='left')
