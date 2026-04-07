@@ -7,3 +7,7 @@ xgboost
 scipy
 statsmodels
 plotly==5.18.0
+fastapi
+uvicorn
+pydantic
+python-multipart

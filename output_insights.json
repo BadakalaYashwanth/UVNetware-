@@ -1,47 +1,35 @@
 {
   "weekly_summary": {
-    "total_clicks": 350,
-    "total_revenue": 4500.0,
-    "growth_rate": "+12%",
-    "avg_order_value": 75.5
+    "total_clicks": 85,
+    "total_revenue": 950.0,
+    "growth_rate": "+0%",
+    "avg_order_value": 0.0
   },
   "monthly_summary": {
-    "total_clicks": 1400,
-    "total_revenue": 18500.0,
-    "growth_rate": "+8%",
-    "avg_order_value": 74.2
+    "total_clicks": 85,
+    "total_revenue": 950.0,
+    "growth_rate": "+0%",
+    "avg_order_value": 0.0
   },
   "yearly_summary": {
-    "total_clicks": 16500,
-    "total_revenue": 215000.0,
-    "growth_rate": "+15%",
-    "avg_order_value": 72.8
+    "total_clicks": 85,
+    "total_revenue": 950.0,
+    "growth_rate": "+0%",
+    "avg_order_value": 0.0
   },
   "channel_performance": [
     {
       "channel": "google",
-      "ROI": 2.11,
-      "CPC": 5.29,
+      "ROI": 1.1111111111111112,
+      "CPC": 5.294117647058823,
       "CPM": 375.0
-    },
-    {
-      "channel": "facebook",
-      "ROI": 1.45,
-      "CPC": 3.12,
-      "CPM": 245.0
-    },
-    {
-      "channel": "email",
-      "ROI": 4.56,
-      "CPC": 0.5,
-      "CPM": 12.0
     }
   ],
   "roi_insights": {
     "top_factors": [
-      "CPC",
-      "CTR",
-      "Device Type"
+      "impressions",
+      "clicks",
+      "cost"
     ],
     "key_drivers": [
       "Device Type",
@@ -51,31 +39,22 @@
   },
   "budget_recommendations": {
     "increase": [
-      "google",
-      "email"
+      "google"
     ],
-    "decrease": [
-      "facebook"
-    ]
+    "decrease": []
   },
   "user_behavior_insights": {
     "top_devices": {
-      "desktop": 97,
-      "mobile": 53
+      "desktop": 1
     },
     "top_os": {
-      "Windows 11": 85,
-      "MacOS": 42,
-      "iOS": 23
+      "Windows 11": 1
     },
     "user_types": {
-      "returning": 105,
-      "new": 45
+      "returning": 1
     },
     "geo_distribution": {
-      "United States": 120,
-      "Canada": 25,
-      "United Kingdom": 5
+      "United States": 1
     }
   },
   "funnel_analytics": {
@@ -94,18 +73,16 @@
     "bottleneck_step": "Step 3"
   },
   "geo_insights": {
-    "United States": 120,
-    "Canada": 25,
-    "United Kingdom": 5
+    "United States": 1
   },
   "user_history_metrics": {
     "avg_total_sessions": 12.0,
     "avg_total_revenue": 450.0,
     "loyalty_engagement_score": 85.0
   },
-  "anomalies": [
-    "Flags raised for google on Tuesday due to: high bounce rate",
-    "Flags raised for facebook on Thursday due to: low conversion rate"
-  ],
-  "executive_summary": "User u1_001 shows high loyalty and successful conversion. Checkout flow is efficient. Google channel leads ROI."
+  "anomalies": [],
+  "executive_summary": {
+    "text": "User u1_001 shows high loyalty and successful conversion. Checkout flow is efficient.",
+    "generatedAt": "2026-04-01T15:15:00.000Z"
+  }
 }
