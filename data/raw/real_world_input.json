@@ -1,101 +1,137 @@
 {
-  "version": "v1",
+  "version": "v2",
+  "avg_order_value": 75.5,
+  "currency": "USD",
+  "transaction_id": "tx_998877",
   "meta": {
     "userId": "u1_001",
     "siteId": "site_001",
     "generatedAt": "2026-04-01T15:10:24.586Z",
     "timestamp": "2026-04-01T15:10:24.586Z",
     "channel": "google",
-    "campaign_id": "camp_001"
-  },
-  "userCluster": {
-    "clusterId": 0,
-    "label": "high_value_user"
+    "campaign_id": "camp_001",
+    "geoLocation": {
+      "country": "United States",
+      "city": "San Francisco"
+    },
+    "deviceType": "desktop",
+    "os": "Windows 11",
+    "browser": "Chrome"
   },
   "marketingMetrics": {
-    "impressions": 100,
-    "clicks": 7,
-    "conversions": 0,
-    "cost": 50,
-    "revenue": 0
+    "impressions": 1200,
+    "clicks": 85,
+    "conversions": 12,
+    "cost": 450.0,
+    "revenue": 950.0,
+    "cpc": 5.29,
+    "cpm": 375.0
   },
   "aggregated": {
     "traffic": {
-      "totalSessions": 1,
-      "avgSessionTime": 5
+      "totalSessions": 150,
+      "avgSessionTime": 8.5,
+      "newUsers": 45,
+      "returningUsers": 105
     },
     "topPages": [
       {
         "page": "/",
-        "views": 6,
-        "timeSpent": 260
+        "views": 450,
+        "timeSpent": 12000,
+        "conversions": 5
+      },
+      {
+        "page": "/pricing",
+        "views": 200,
+        "timeSpent": 8000,
+        "conversions": 7
       }
     ],
     "clickAnalytics": [
       {
-        "element": "learn_more",
+        "element": "cta_main",
         "page": "/",
-        "clicks": 7
-      },
-      {
-        "element": "buy_button",
-        "page": "/",
-        "clicks": 7
+        "clicks": 45
       }
     ],
     "sessionInsights": {
-      "bounceRate": 0,
-      "avgScrollDepth": 40
+      "bounceRate": 35.5,
+      "avgScrollDepth": 65.0,
+      "exitRate": 22.1
     },
     "deviceBreakdown": [
       {
         "device": "desktop",
-        "percentage": 1
+        "percentage": 65.0,
+        "count": 97
+      },
+      {
+        "device": "mobile",
+        "percentage": 35.0,
+        "count": 53
       }
     ],
     "hourlyTraffic": [
       {
         "hour": 14,
-        "sessions": 1
+        "sessions": 25,
+        "conversions": 3
       }
     ],
     "topExitPages": [
       {
-        "page": "/",
-        "exits": 5
+        "page": "/checkout-error",
+        "exits": 15,
+        "exitRate": 0.75
       }
     ]
   },
   "ai_input": {
     "sessions": [
       {
-        "sessionId": "s_001",
+        "sessionId": "s_101",
         "visitorId": "u1_001",
         "siteId": "site_001",
         "device": "desktop",
         "source": "google",
-        "converted": false,
+        "converted": true,
         "createdAt": "2026-04-01T14:58:05.482Z",
-        "session_duration": 200,
+        "session_duration": 450,
         "bounce_rate": 0,
+        "entryPage": "/",
+        "exitPage": "/thank-you",
+        "referrer": "google.com",
+        "cartValue": 120.0,
+        "checkoutStarted": true,
+        "paymentCompleted": true,
+        "userType": "returning",
+        "loyaltyScore": 85,
         "pages": [
           {
             "path": "/",
             "timeSpent": 120,
-            "scrollDepth": 60,
-            "clicks": 3,
+            "scrollDepth": 80,
+            "clicks": 5,
             "enteredAt": "2026-04-01T14:58:05.482Z"
           },
           {
             "path": "/pricing",
-            "timeSpent": 80,
-            "scrollDepth": 40,
-            "clicks": 2,
-            "enteredAt": "2026-04-01T14:59:10.000Z"
+            "timeSpent": 200,
+            "scrollDepth": 90,
+            "clicks": 8,
+            "enteredAt": "2026-04-01T15:00:05.482Z"
+          },
+          {
+            "path": "/checkout",
+            "timeSpent": 130,
+            "scrollDepth": 100,
+            "clicks": 12,
+            "enteredAt": "2026-04-01T15:03:25.482Z"
           }
         ],
-        "eventsCount": 10,
-        "totalDuration": 200
+        "eventsCount": 25,
+        "totalDuration": 450
       }
     ],
     "funnel": {
@@ -105,11 +141,29 @@
         "/pricing",
         "/checkout",
         "/thank-you"
+      ],
+      "conversionRates": [
+        1.0,
+        0.8,
+        0.5,
+        0.95
+      ],
+      "dropOffRates": [
+        0.0,
+        0.2,
+        0.5,
+        0.05
       ]
     }
   },
+  "userHistory": {
+    "totalSessions": 12,
+    "totalRevenue": 450.0,
+    "avgOrderValue": 37.5,
+    "lastActiveDays": 2
+  },
   "summary": {
-    "text": "User has low engagement on pricing page and dropped before checkout. Improve CTA visibility.",
-    "generatedAt": "2026-04-01T15:10:24.586Z"
+    "text": "User u1_001 shows high loyalty and successful conversion. Checkout flow is efficient.",
+    "generatedAt": "2026-04-01T15:15:00.000Z"
   }
 }

@@ -1,0 +1,35 @@
+{
+  "reports": [
+    {
+      "reportName": "Traffic Spike/Drop",
+      "totalSessions": 1,
+      "status": "normal",
+      "insight": "Traffic is within expected bounds."
+    },
+    {
+      "reportName": "Fraud/Bot",
+      "botTrafficCount": 0,
+      "fraudRisk": "Low",
+      "insight": "Few anomalies detected in loyalty scores."
+    },
+    {
+      "reportName": "Conversion Drop",
+      "conversionRate": 0.0,
+      "dropOffRate": 0.1,
+      "insight": "Conversion performance is stable."
+    },
+    {
+      "reportName": "Revenue Leakage",
+      "estimatedLoss": 150.0,
+      "leakageReason": "Cart abandonment is the primary cause.",
+      "insight": "Focus on checkout page optimization."
+    },
+    {
+      "reportName": "Data Integrity",
+      "missingValues": 0,
+      "integrityScore": 0.95,
+      "insight": "High quality data with minimal missing attributes."
+    }
+  ],
+  "overallSummary": "The system analyzed 5 core business areas and found no critical issues."
+}

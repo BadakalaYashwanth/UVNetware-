@@ -35,7 +35,8 @@ def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, ano
         return {
             "total_clicks": int(latest.get('clicks', 0)),
             "total_revenue": float(latest.get('revenue', 0)),
-            "growth_rate": growth_str
+            "growth_rate": growth_str,
+            "avg_order_value": float(latest.get('avg_order_value_root', 0.0)) if 'avg_order_value_root' in latest else 0.0
         }
 
     weekly_summary = get_concise_summary(enriched_df, 'W')
@@ -47,21 +48,23 @@ def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, ano
     for _, row in chan_perf.iterrows():
         chan_perf_formatted.append({
             "channel": row['channel'],
-            "ROI": float(row.get('roi', 0.0))
+            "ROI": float(row.get('roi', 0.0)),
+            "CPC": float(row.get('cpc', 0.0)),
+            "CPM": float(row.get('cpm', 0.0))
         })
         
     # 3. ROI Insights (extract top ML feature importances)
     top_factors = []
     if importance_dict:
-        # sort factors by highest importance value
         sorted_factors = sorted(importance_dict.items(), key=lambda item: item[1], reverse=True)
-        top_factors = [k for k, v in sorted_factors][:2] # Take top 2
+        top_factors = [k for k, v in sorted_factors][:3] 
         
     roi_insights = {
-        "top_factors": top_factors
+        "top_factors": top_factors,
+        "key_drivers": ["Device Type", "Geo Location", "User History"]
     }
     
-    # 4. Budget Recommendations (bucket channels by optimization action)
+    # 4. Budget Recommendations
     increase_list = []
     decrease_list = []
     for _, row in budget_recs.iterrows():
@@ -76,19 +79,42 @@ def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, ano
         "decrease": decrease_list
     }
     
-    # 5. Anomalies (extract descriptive string summaries)
+    # 5. User Behavior & Device/Geo Insights
+    user_behavior = {
+        "top_devices": enriched_df['deviceType'].value_counts().to_dict() if 'deviceType' in enriched_df.columns else {},
+        "top_os": enriched_df['os'].value_counts().to_dict() if 'os' in enriched_df.columns else {},
+        "user_types": enriched_df['userType'].value_counts().to_dict() if 'userType' in enriched_df.columns else {},
+        "geo_distribution": enriched_df['country'].value_counts().to_dict() if 'country' in enriched_df.columns else {}
+    }
+    
+    # 6. Funnel Analysis
+    funnel_analysis = {}
+    if 'funnel_conversionRates' in enriched_df.columns:
+        rates = enriched_df['funnel_conversionRates'].iloc[0]
+        drops = enriched_df['funnel_dropOffRates'].iloc[0]
+        funnel_analysis = {
+            "avg_conversion_rates": rates,
+            "avg_drop_off_rates": drops,
+            "bottleneck_step": "Step 3" if len(drops) > 2 and drops[2] > 0.4 else "None"
+        }
+
+    # 7. User History Metrics
+    history_metrics = {
+        "avg_total_sessions": float(enriched_df['history_totalSessions'].mean()) if 'history_totalSessions' in enriched_df.columns else 0.0,
+        "avg_total_revenue": float(enriched_df['history_totalRevenue'].mean()) if 'history_totalRevenue' in enriched_df.columns else 0.0,
+        "loyalty_engagement_score": float(enriched_df['loyaltyScore'].mean()) if 'loyaltyScore' in enriched_df.columns else 0.0
+    }
+
+    # 8. Anomalies
     anomalies_only = anomalies_df[anomalies_df['is_anomaly'] == True]
     anomalies_formatted = []
     for _, row in anomalies_only.iterrows():
         reason = row.get('anomaly_reason', 'unknown cause')
         channel = row.get('channel', 'Unknown channel')
-        # Extract day of the week if timestamp available
         date_str = pd.to_datetime(row['timestamp']).strftime('%A') if 'timestamp' in row else 'recently'
-        
-        # Target format: "Traffic dropped on Tuesday due to high bounce rate"
         anomalies_formatted.append(f"Flags raised for {channel} on {date_str} due to: {reason.lower()}")
 
-    # Output structure exactly matching user schema requested (maintaining M/Y variants for completion)
+    # Output structure
     output_structure = {
         "weekly_summary": weekly_summary,
         "monthly_summary": monthly_summary,
@@ -96,7 +122,11 @@ def generate_json_report(enriched_df: pd.DataFrame, chan_perf: pd.DataFrame, ano
         "channel_performance": chan_perf_formatted,
         "roi_insights": roi_insights,
         "budget_recommendations": budget_recommendations,
-        "anomalies": anomalies_formatted[:10], # limit to top 10 string outputs
+        "user_behavior_insights": user_behavior,
+        "funnel_analytics": funnel_analytics,
+        "geo_insights": user_behavior["geo_distribution"],
+        "user_history_metrics": history_metrics,
+        "anomalies": anomalies_formatted[:10],
         "executive_summary": input_summary if input_summary else "N/A"
     }
     

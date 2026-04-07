@@ -10,28 +10,44 @@ def enrich_data(df: pd.DataFrame) -> pd.DataFrame:
     # ROI: (Revenue - Cost) / Cost
     df['roi'] = np.where(df['cost'] > 0, 
                          (df['revenue'] - df['cost']) / df['cost'], 
-                         0.0) # Adjusted per Phase 2 explicit formula. If cost is 0, keeping 0.0 placeholder.
+                         0.0)
     
     # Conversion Rate (Conversions / Clicks)
     df['conversion_rate'] = np.where(df['clicks'] > 0, df['conversions'] / df['clicks'], 0.0)
     
-    # Cost Per Click (CPC)
-    df['cpc'] = np.where(df['clicks'] > 0, df['cost'] / df['clicks'], 0.0)
+    # Cost Per Click (CPC) - Use input if available
+    if 'cpc_input' in df.columns:
+        df['cpc'] = df['cpc_input'].fillna(np.where(df['clicks'] > 0, df['cost'] / df['clicks'], 0.0))
+    else:
+        df['cpc'] = np.where(df['clicks'] > 0, df['cost'] / df['clicks'], 0.0)
     
+    # CPM - Use input if available
+    if 'cpm_input' in df.columns:
+        df['cpm'] = df['cpm_input'].fillna(np.where(df['impressions'] > 0, (df['cost'] / df['impressions']) * 1000, 0.0))
+    else:
+        df['cpm'] = np.where(df['impressions'] > 0, (df['cost'] / df['impressions']) * 1000, 0.0)
+
     # Cost per Conversion (cost / conversions)
     df['cost_per_conversion'] = np.where(df['conversions'] > 0, df['cost'] / df['conversions'], 0.0)
     
     # Click-Through Rate (CTR) (clicks / impressions)
     df['ctr'] = np.where(df['impressions'] > 0, df['clicks'] / df['impressions'], 0.0)
     
+    # Advanced E-commerce Metrics
+    if 'checkoutStarted' in df.columns:
+        df['checkout_rate'] = df['checkoutStarted'].astype(float)
+    if 'paymentCompleted' in df.columns:
+        df['purchase_rate'] = df['paymentCompleted'].astype(float)
+    if 'cartValue' in df.columns:
+        df['avg_cart_value'] = df['cartValue'].mean()
+
     # Engagement Score: session_duration × clicks × (1 - bounce_rate)
-    # Ensure columns exist before calculating
     if all(col in df.columns for col in ['session_duration', 'clicks', 'bounce_rate']):
-        df['engagement_score'] = df['session_duration'] * df['clicks'] * (1 - df['bounce_rate'])
+        df['engagement_score'] = df['session_duration'] * df['clicks'] * (1 - df['bounce_rate'] / 100.0)
     else:
         df['engagement_score'] = 0.0
     
-    # Extract date components for aggregation only if timestamp exists
+    # Extract date components for aggregation
     if 'timestamp' in df.columns:
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df['date'] = df['timestamp'].dt.date
