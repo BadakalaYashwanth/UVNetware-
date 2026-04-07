@@ -1,80 +1,88 @@
-# AI-Driven Marketing Analytics Pipeline
+# AI-Driven Advanced Marketing Analytics System 🚀
 
-This system analyzes raw marketing and user activity data and converts it into structured weekly, monthly, and yearly insights. It provides channel performance analysis, ROI optimization, anomaly detection, and budget recommendations to support data-driven marketing decisions.
+This system is an evolved analytics pipeline that transforms raw multi-channel marketing data and granular user activity into structured, high-level business intelligence. It provides automated weekly, monthly, and yearly insights, including ROI optimization, behavioral segmentation, and predictive budget recommendations.
 
-## Features
-- **Data Processing & Feature Engineering**: Robust pipelines to clean and transform raw marketing and user activity data.
-- **Channel Performance Analysis**: Evaluates which channels are driving the most value.
-- **ROI Optimization**: Models past performance to optimize future spend.
-- **Anomaly Detection**: Identifies unusual spikes or drops in traffic and conversion rates.
-- **Budget Recommendations**: Data-driven, automated budget allocation suggestions.
+---
 
-## Technology Stack & Machine Learning Algorithms
+## 🌟 Advanced System Evolution
+The project has evolved from a basic tracking tool into an **Intelligent Analytics Engine**, now supporting complex e-commerce and behavioral data points.
 
-### Language & Core Tech Stack
+### 🆕 New Capabilities Added:
+- **Funnel Drop-off Analysis**: Automatically identifies bottlenecks in the conversion journey.
+- **Geo-Behavioral Insights**: Tracks performance and user trends by country and city.
+- **Loyalty & History Metrics**: Analyzes long-term user value using historical session and revenue data.
+- **Advanced E-commerce Tracking**: Integrated support for `avg_order_value`, `cartValue`, and transaction-level details.
+- **Device & OS Intelligence**: Granular breakdown of technical user profiles to optimize multi-platform strategies.
 
-| Name | Purpose | Where did you use and how does it work | Output of the work |
-| :--- | :--- | :--- | :--- |
-| **Python** | Core Programming Language | Acts as the foundational backend language running the entire pipeline via `main.py` and the `src/` modular filesystem. | The executable `.py` scripts and data logic powering your application. |
+---
 
-### Project Libraries & Dependencies
+## 📊 Data Input Schema
 
-| Name | Purpose | Where did you use and how does it work | Output of the work |
-| :--- | :--- | :--- | :--- |
-| **Pandas** | Data Manipulation & Processing | Heavily used spanning across `preprocessing.py`, `feature_engineering.py`, and all machine learning scripts. It loads the core JSON data and handles tabular aggregation and manipulation. | Cleaned robust `.DataFrame` structures used extensively to pipe data across the program. |
-| **NumPy** | Numerical Operations | Used within `advanced_roi_prediction.py` to efficiently map mathematical array conditionals (like division computations for conditional ROI forecasting). | Optimized arrays and numerical output calculations. |
-| **Scikit-learn** *(sklearn)* | Foundational Machine Learning Toolset | Imported in `anomaly_detection.py` and `user_segmentation.py`. Provides the standardized implementations for clustering algorithms, anomaly detection, and data scalers (like `StandardScaler`). | Structured clustering mappings and standardized analytical models. |
-| **XGBoost** | High-Performance Predictive Modeling | Imported in `advanced_roi_prediction.py` to deploy advanced gradient-boosted decision trees for regression and continuous feature analysis. | Heavily optimized models mapping dataset behaviors. |
-| **Matplotlib, Seaborn, Plotly** *(v5.18.0)* | Data Visualization Tools | Available in `requirements.txt` to power visualization tools, visual graph generation, and potentially connecting with front-end analytical dashboards. | Front-end readable charts, plots, and graphical interfaces. |
-| **SciPy, StatsModels** | Advanced Statistical Analysis | Listed within the project's dependencies to assist in calculating deep statistical distributions, variations, and advanced descriptive statistics. | Statistical arrays and hypothesis validation outputs. |
+The system now supports an extended JSON input structure (`real_world_input.json`):
 
-### Machine Learning Algorithms & Custom Engine Logic
+### **Legacy Inputs (Maintained)**
+- `meta`: userId, siteId, timestamp, channel, campaign_id.
+- `marketingMetrics`: impressions, clicks, conversions, cost, revenue.
+- `aggregated`: totalSessions, avgSessionTime, bounceRate, topPages.
 
-| Name | Purpose | Where did you use and how does it work | Output of the work |
-| :--- | :--- | :--- | :--- |
-| **KMeans Clustering** *(via Scikit-learn)* | User Behavioral Segmentation | **Where**: `src/models/user_segmentation.py`<br><br>**How it works**: Aggregates data by user and runs it through a `StandardScaler`. It maps behaviors using features like `revenue`, `clicks`, `session_duration`, and `conversions` to cluster and identify high-value vs. bargain shopper groups. | Maps each `user_id` to a unique `segment_id` identifying their behavioral profile, and provides a dashboard-ready data object of segment traits. |
-| **XGBoost Regressor** *(XGBRegressor)* | ROI & Future Revenue Prediction | **Where**: `src/models/advanced_roi_prediction.py`<br><br>**How it works**: Deploys a regression decision tree (`reg:squarederror`) leveraging historical spend attributes (`impressions`, `clicks`, `cost`, `session_duration`). Evaluated securely via Mean Squared Error (MSE). | A `predicted_revenue` numeric mapping output, derived predictive ROI, and an extracted `feature_importances` dictionary detailing exactly what drives revenue. |
-| **Isolation Forest** *(via Scikit-learn)* | Anomaly & Outlier Detection | **Where**: `src/models/anomaly_detection.py`<br><br>**How it works**: Fits an Isolation Forest model to detect unusual dataset volume spikes or erratic events, assuming roughly a 5% data contamination rate (`contamination=0.05`). | Appends an `is_anomaly` boolean flag onto operations, an `anomaly_score`, and explicitly computes a contextual `anomaly_reason` string. |
-| **ROI Weighting Mathematical Algorithm** *(Custom)* | Dynamic Budget Optimization | **Where**: `src/models/budget_recommendation.py`<br><br>**How it works**: Analyzes historical `ROI` distributions across channels. It computes proportional allocations algorithmically with a custom baseline safety net to ensure smaller experimental channels aren't starved completely. | A DataFrame dictating a specific `recommended_budget`, numerical `adjustment_amount`, and programmatic text actions (e.g., *"Increase Spend (High ROI)"*). |
+### **New Advanced Inputs**
+- **Root Level**: `avg_order_value`, `currency`, `transaction_id`.
+- **Granular Meta**: `geoLocation` (country, city), `deviceType`, `os`, `browser`.
+- **marketingMetrics**: `cpc` (manual input), `cpm` (manual input).
+- **Advanced Aggregations**: `newUsers`, `returningUsers`, `exitRate` (per page/session).
+- **AI Session Data**: `entryPage`, `exitPage`, `referrer`, `cartValue`, `checkoutStarted`, `paymentCompleted`.
+- **User Intelligence**: `userType` (new/returning), `loyaltyScore`.
+- **Funnel Intelligence**: `conversionRates` and `dropOffRates` per step.
+- **User History**: `totalSessions`, `totalRevenue`, `avgOrderValue` (lifetime).
 
-## Project Structure
+---
+
+## 🛠️ Technology Stack
+
+| Name | Purpose | Implementation |
+| :--- | :--- | :--- |
+| **Python** | Core Backend | Orchestrates the entire pipeline via `main.py`. |
+| **Pandas** | Data Processing | Handles complex JSON parsing, flattening, and aggregation. |
+| **XGBoost** | Predictive Modeling | Predicts ROI and identifies key revenue drivers. |
+| **Scikit-learn** | ML Algorithms | Powers `Isolation Forest` (Anomalies) and `KMeans` (Segmentation). |
+| **NumPy** | Numeric Logic | Performs high-speed vector calculations for ROI and growth rates. |
+
+---
+
+## 📁 Project Structure
 ```
 ├── data/
-│   ├── raw/               # Immutable original data
-│   └── processed/         # Cleaned, finalized data sets for modeling
-├── notebooks/             # Jupyter notebooks for exploration and prototyping
+│   └── raw/               # input: real_world_input.json
 ├── src/
-│   ├── data_processing/   # Scripts to fetch and clean data
-│   ├── features/          # Feature engineering logic
-│   ├── models/            # Anomaly, ROI, and budget recommendation models
-│   ├── insights/          # Scripts to generate weekly/monthly/yearly reports
-│   └── utils/             # Helper functions and configurations
-├── tests/                 # Unit tests for the pipeline
-├── requirements.txt       # Project dependencies
-└── main.py                # Main entry point to run the pipeline
+│   ├── data_processing/   # parser.py (Updated to handle new schema)
+│   ├── features/          # feature_engineering.py (Advanced e-commerce logic)
+│   ├── models/            # Anomaly & Budget models
+│   └── insights/          # generate_report.py (Produces unified output)
+├── main.py                # Pipeline orchestrator
+└── output_insights.json   # Unified JSON Insights Output
 ```
 
-## How to Run the Project
+---
 
-Follow these steps to execute the pipeline on your machine:
+## 🚀 How to Run
 
-1. **Open your Terminal (Command Prompt or PowerShell)**
-   Navigate into the project directory:
-   ```powershell
-   cd "C:\Users\ASUS\OneDrive\Desktop\Saas Application"
-   ```
-
-2. **Install the Required Libraries**
-   Install all the ML models and data processing engines we defined:
+1. **Install Dependencies**:
    ```powershell
    pip install -r requirements.txt
    ```
 
-3. **Run the Pipeline**
-   Execute the master orchestration file. This will automatically generate the 5,000 rows of mock data, run the feature engineering, predict the anomalies, and bundle the Insights:
+2. **Prepare Input**:
+   Ensure `data/raw/real_world_input.json` is populated with your latest marketing/session data.
+
+3. **Execute Pipeline**:
    ```powershell
    python main.py
    ```
 
-4. **View the Results**
-   Once the execution completes (it only takes seconds), open the newly generated `output_insights.json` file in your editor to see the fully structured API payload!
+4. **Review Insights**:
+   Open `output_insights.json` for a comprehensive breakdown of your marketing performance, user behavior, and automated recommendations.
+
+---
+
+## 🏁 Final Expectation
+The system successfully bridges the gap between **Basic Analytics** and **Advanced Intelligent Intelligence**, reflecting real-world business complexities in a unified, API-ready JSON format.
