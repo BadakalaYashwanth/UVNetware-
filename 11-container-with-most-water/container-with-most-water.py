@@ -5,14 +5,19 @@ class Solution:
         max_area = 0
 
         while left < right:
-            widht = right - left
-            container_height = min(height[left], height[right])
-            area = widht * container_height
 
+            # Calculate the current container area
+            width = right - left
+            current_height = min(height[left], height[right])
+            area = width * current_height
+
+            # Update the maximum area
             max_area = max(max_area, area)
 
+            # Move the pointer with the smaller height
             if height[left] < height[right]:
                 left += 1
             else:
                 right -= 1
+
         return max_area
