@@ -5,6 +5,7 @@ class Solution:
         result = 0
 
         for right in range(len(nums)):
+
             if nums[right] == 0:
                 zero_count += 1
 
@@ -12,7 +13,7 @@ class Solution:
                     if nums[left] == 0:
                         zero_count -= 1
                     left += 1
-                
-            result = max(result, right - left )
-            
+
+            result = max(result, right - left)
+
         return result
